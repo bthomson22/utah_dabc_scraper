@@ -35,7 +35,7 @@ def setup_logging():
 def main():
     credentials = get_credentials()
     mail_list = get_mail_list()
-    products_dict = {'Crater Lake':'910543','Vida':'089221','Larceny':'018856'}
+    products_dict = {'Crater Lake':'910543','Vida':'089221'}
     appended_data = []  
     setup_logging()
     
