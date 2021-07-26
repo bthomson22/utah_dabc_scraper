@@ -7,9 +7,10 @@ import re
 from pretty_html_table import build_table
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
+import json
 
 subject = 'Booze available!'
+
 
 def get_credentials():
     credentials = {}
@@ -23,6 +24,11 @@ def get_mail_list():
     with open('mail_list.txt') as f:
         mail_list = [x.strip().split(', ') for x in f.readlines()][0]
     return mail_list
+
+def get_products_dict():
+    with open('products.json') as f:
+        products = json.load(f)
+    return products
         
 def setup_logging():
     logging.basicConfig(filename='scrape.log', filemode='w', format='%(asctime)s - %(message)s', level=logging.INFO)
@@ -35,12 +41,12 @@ def setup_logging():
 def main():
     credentials = get_credentials()
     mail_list = get_mail_list()
-    products_dict = {'Crater Lake':'910543','Vida':'089221'}
+    products = get_products_dict()
     appended_data = []  
     setup_logging()
     
     try:
-        for key, value in products_dict.items():
+        for key, value in products.items():
 
             url= f'https://webapps2.abc.utah.gov/ProdApps/ProductLocatorCore/ProductDetail/Index?sku={value}'
             html_content = requests.get(url).text
