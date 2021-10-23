@@ -39,6 +39,8 @@ def main():
     try:
         for key, value in products.items():
 
+            print('\n########## SCRAPING WEBSITE FOR THE BELOW PRODUCTS ##########\n')
+            print(products.items())
             url= f'https://webapps2.abc.utah.gov/ProdApps/ProductLocatorCore/ProductDetail/Index?sku={value}'
             html_content = requests.get(url).text
             soup = BeautifulSoup(html_content, 'html.parser')
@@ -62,13 +64,18 @@ def main():
             df_prod['Product Name'] = key
             df_prod['Product_ID'] = value
             appended_data.append(df_prod)
+        
+        print('\n########## SCRAPING FINISHED ##########\n')
 
-        print('\n########## ALL STORES ##########\n')
+
+        print('\n########## CREATING DATAFRAME ##########\n')
 
         df = pd.concat(appended_data, ignore_index = True)
   
         df['Store Qty'] = df['Store Qty'].astype(int)
         df = df[df['Store Qty'] > 0]
+
+        print('\n########## RESULTS ##########\n')
 
         if len(df.index) > 0:
             try:
@@ -103,6 +110,7 @@ def main():
                 print('Mail Sent')
 
             except SMTPException as e:
+                print('Error sending email')
                 error_code = e.smtp_code
                 error_message = e.smtp_error
 
