@@ -36,11 +36,13 @@ def main():
     products = get_products_dict()
     appended_data = []  
     
+    print('\n########## SCRAPING WEBSITE FOR THE BELOW PRODUCTS ##########\n')
+    print(products)
+
     try:
         for key, value in products.items():
-
-            print('\n########## SCRAPING WEBSITE FOR THE BELOW PRODUCTS ##########\n')
-            print(products.items())
+            print(f'\n########## RETRIEVING {key} ##########\n')
+        
             url= f'https://webapps2.abc.utah.gov/ProdApps/ProductLocatorCore/ProductDetail/Index?sku={value}'
             html_content = requests.get(url).text
             soup = BeautifulSoup(html_content, 'html.parser')
@@ -63,19 +65,22 @@ def main():
             df_prod = pd.DataFrame(data=all_rows, columns=headings)
             df_prod['Product Name'] = key
             df_prod['Product_ID'] = value
+            df_prod['URL'] = url
+            print(df_prod)
+
             appended_data.append(df_prod)
+            print(f'\n########## SUCESSFULLY RETRIEVED {key} ##########\n')
         
         print('\n########## SCRAPING FINISHED ##########\n')
-
 
         print('\n########## CREATING DATAFRAME ##########\n')
 
         df = pd.concat(appended_data, ignore_index = True)
-  
         df['Store Qty'] = df['Store Qty'].astype(int)
         df = df[df['Store Qty'] > 0]
 
         print('\n########## RESULTS ##########\n')
+        print(df)
 
         if len(df.index) > 0:
             try:
