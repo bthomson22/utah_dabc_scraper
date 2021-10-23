@@ -11,6 +11,12 @@ from smtplib import SMTP
 import smtplib
 from smtplib import SMTPException
 import sys
+from datetime import datetime
+
+now = datetime.now() # current date and time
+todays_date = now.strftime("%m/%d/%Y")
+
+subject = f'Daily Booze Report {todays_date}'
 
 def get_credentials():
     credentials = {}
@@ -89,7 +95,7 @@ def main():
                 sent_from = gmail_user
 
                 msg = MIMEMultipart()
-                msg['Subject'] = "Booze Available!"
+                msg['Subject'] = subject
                 msg['From'] = sent_from
                 msg['Bcc'] = ", ".join(mail_list)
 
