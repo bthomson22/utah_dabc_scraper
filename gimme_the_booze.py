@@ -84,6 +84,7 @@ def main():
         df = pd.concat(appended_data, ignore_index = True)
         df['Store Qty'] = df['Store Qty'].astype(int)
         df = df[df['Store Qty'] > 0]
+        df.reset_index(drop=True,inplace=True)
 
         print('\n########## RESULTS ##########\n')
         print(df)

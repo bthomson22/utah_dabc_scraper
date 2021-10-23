@@ -25,4 +25,4 @@ password:{password}
 email_1@email.com,email_2@email.com,email_3@email.com
 ```
 
-4. Run the script using `python3 scraper.py`
+4. Run the script using `python3 gimme_the_booze.py`
