@@ -134,3 +134,4 @@ passwords.txt
 .venv/
 *.csv
 *.log
+*.json
