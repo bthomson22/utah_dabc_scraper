@@ -132,3 +132,5 @@ mail_list.txt
 passwords.txt
 
 .venv/
+*.csv
+*.log
