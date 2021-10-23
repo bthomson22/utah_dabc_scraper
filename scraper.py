@@ -12,9 +12,6 @@ import smtplib
 from smtplib import SMTPException
 import sys
 
-subject = 'Booze available!'
-
-
 def get_credentials():
     credentials = {}
     with open('passwords.txt') as f:
@@ -79,38 +76,6 @@ def main():
                 gmail_password = credentials['password']
                 sent_from = gmail_user
 
-                # subject = 'Booze available!'
-                # msg_body = build_table(df,'blue_light')
-                # message = """From: %s
-                # To: %s
-                # Subject: %s
-                # %s
-                # """ % (sent_from, to, subject, msg_body)
-
-                # server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-                # server.ehlo()
-                # server.login(gmail_user, gmail_password)
-                # server.sendmail(sent_from, to, message)
-                # server.close()
-
-                # message = MIMEMultipart()
-                # message['Subject'] = 'Booze Available!'
-                # message['From'] = 'utah.dabc.scraper@gmail.com'
-                # message['To'] = 'bthomson22@gmail.com'
-                # body_content = build_table(df, 'blue_light')
-                # message.attach(MIMEText(body_content, 'html'))
-                # msg_body = message.as_string()
-                # server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-                # server.ehlo()
-                # server.login(gmail_user, gmail_password)
-                # server.sendmail(message['From'], message['To'], msg_body)
-                # server.close()
-                
-                # logging.info('Email sent!')
-                # print("\nThere's some available!")
-                # print(df)
-                
-
                 msg = MIMEMultipart()
                 msg['Subject'] = "Booze Available!"
                 msg['From'] = sent_from
@@ -132,7 +97,7 @@ def main():
                 server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.ehlo()
                 server.starttls()
-                server.login(gmail_user,gmail_password)
+                server.login(gmail_user, gmail_password)
                 server.sendmail(sent_from, mail_list , msg.as_string())
                 server.quit()
                 print('Mail Sent')
