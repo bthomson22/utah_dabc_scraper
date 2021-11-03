@@ -40,7 +40,7 @@ def main():
     credentials = get_credentials()
     mail_list = get_mail_list()
     products = get_products_dict()
-    appended_data = []  
+    appended_data = [] 
     
     print('\n########## SCRAPING WEBSITE FOR THE BELOW PRODUCTS ##########\n')
     print(products)
@@ -88,50 +88,48 @@ def main():
 
         print('\n########## RESULTS ##########\n')
         print(df)
+    
+    except:
+        print("\nNone available :(")
 
-        if len(df.index) > 0:
-            try:
-                gmail_user = credentials['username']
-                gmail_password = credentials['password']
-                sent_from = gmail_user
+    if len(df.index) > 0:
+        try:
+            # print(mail_list)
+            # for i in mail_list:
+            gmail_user = credentials['username']
+            gmail_password = credentials['password']
+            sent_from = gmail_user
 
-                msg = MIMEMultipart()
-                msg['Subject'] = subject
-                msg['From'] = sent_from
-                msg['Bcc'] = ", ".join(mail_list)
+            msg = MIMEMultipart()
+            msg['Subject'] = subject
+            msg['From'] = 'Utah Daily Booze'
+            msg['Bcc'] = (', ').join(mail_list)
 
 
-                html = """\
-                <html>
-                <head></head>
-                <body>
-                    {0}
-                </body>
-                </html>
-                """.format(build_table(df,'blue_light'))
+            html = """\
+            <html>
+            <head></head>
+            <body>
+                {0}
+            </body>
+            </html>
+            """.format(build_table(df,'blue_light'))
 
-                part1 = MIMEText(html, 'html')
-                msg.attach(part1)
+            part1 = MIMEText(html, 'html')
+            msg.attach(part1)
 
-                server = smtplib.SMTP('smtp.gmail.com', 587)
-                server.ehlo()
-                server.starttls()
-                server.login(gmail_user, gmail_password)
-                server.sendmail(sent_from, mail_list , msg.as_string())
-                server.quit()
-                print('Mail Sent')
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.ehlo()
+            server.starttls()
+            server.login(gmail_user, gmail_password)
+            server.send_message(msg)
+            server.quit()
+            print('Mail Sent')
 
-            except SMTPException as e:
-                print('Error sending email')
-                error_code = e.smtp_code
-                error_message = e.smtp_error
-
-        else:
-            print("\nNone available :(")
-
-    except Exception:
-        print('Failed to scrape')
-
+        except SMTPException as e:
+            print('Error sending email')
+            error_code = e.smtp_code
+            error_message = e.smtp_error
 
 if __name__ == '__main__':
     main()
